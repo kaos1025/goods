@@ -73,3 +73,76 @@
 ---
 
 필요시 각 항목별로 더 세분화하여 관리할 수 있습니다. 
+
+# 프로젝트 전체 디렉토리 구조
+
+```
+project_root/
+│
+├── config/                  # 설정 파일(예: API 키, 환경설정 등)
+│   └── settings.py
+│
+├── core/                    # 핵심 로직(공통 유틸, 예외처리, 로깅 등)
+│   ├── logger.py
+│   ├── exceptions.py
+│   └── utils.py
+│
+├── data/                    # 데이터 저장(임시 파일, DB, 캐시 등)
+│
+├── jobs/                    # 스케줄러 및 배치 작업(Job)
+│   ├── sync_new_products.py
+│   ├── sync_updated_products.py
+│   └── scheduler.py
+│
+├── markets/                 # 마켓별 연동 모듈 (사이트별 하위 디렉토리)
+│   ├── ably/
+│   │   ├── __init__.py
+│   │   ├── api.py
+│   │   ├── parser.py
+│   │   └── utils.py
+│   ├── zigzag/
+│   │   ├── __init__.py
+│   │   ├── api.py
+│   │   ├── parser.py
+│   │   └── utils.py
+│   ├── brandi/
+│   │   ├── __init__.py
+│   │   ├── api.py
+│   │   ├── parser.py
+│   │   └── utils.py
+│   └── base.py   # 공통 인터페이스/추상클래스
+│
+├── naver/                   # 네이버 스마트스토어 연동 모듈
+│   ├── __init__.py
+│   ├── api.py
+│   └── parser.py
+│
+├── tests/                   # 테스트 코드
+│   ├── test_naver.py
+│   ├── test_markets.py
+│   └── test_jobs.py
+│
+├── requirements.txt         # 파이썬 패키지 의존성
+├── README.md
+└── main.py                  # 진입점(예: CLI, 전체 실행)
+```
+
+## 폴더/파일별 역할 설명
+
+- **config/**: 환경설정, API 키, DB 연결 등 설정 관련 코드
+- **core/**: 공통 유틸리티, 로깅, 예외처리 등 프로젝트 전반에서 사용하는 코드
+- **data/**: 임시 데이터, 캐시, DB 파일 등 저장소
+- **jobs/**: 주기적으로 실행되는 배치/스케줄러 작업(Job)
+- **markets/**: 각 마켓(에이블리, 직잭, 브랜디 등) 연동 모듈 및 공통 인터페이스
+    - 사이트별로 하위 디렉토리(ably, zigzag, brandi 등)로 분리하여 유지보수와 확장성을 높임
+    - 각 디렉토리 내에 api, parser, utils 등 역할별 파일을 분리하여 관리
+    - 신규 마켓 추가 시 디렉토리만 추가하면 됨
+    - 공통 인터페이스/추상클래스는 markets/base.py에 위치
+- **naver/**: 네이버 스마트스토어 연동 전용 모듈
+- **tests/**: 유닛/통합 테스트 코드
+- **main.py**: 프로젝트 실행 진입점(예: CLI, 전체 동작 테스트)
+
+---
+
+이 구조를 바탕으로 실제 디렉토리/파일을 생성해 나가면 됩니다.
+필요에 따라 세부 구조나 파일명을 조정할 수 있습니다. 
