@@ -3,7 +3,7 @@ import requests
 from config import settings
 
 def get_product_list(
-    searchKeywordType="CHANNEL_PRODUCT_NO",
+    searchKeywordType=None,
     channelProductNos=None,
     originProductNos=None,
     groupProductNos=None,
@@ -21,18 +21,20 @@ def get_product_list(
     """
     access_token = get_naver_access_token()
     url = f"{settings.NAVER_API_BASE_URL}/external/v1/products/search"
+  
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Accept": "application/json;charset=UTF-8",
         "Content-Type": "application/json"
     }
+
     payload = {
-        "searchKeywordType": searchKeywordType,
-        "channelProductNos": channelProductNos or [],
-        "originProductNos": originProductNos or [],
-        "groupProductNos": groupProductNos or [],
+        "searchKeywordType": searchKeywordType or "SELLER_CODE",
+        #"channelProductNos": channelProductNos or [0],
+        #"originProductNos": originProductNos or [0],
+        #"groupProductNos": groupProductNos or [0],
         "sellerManagementCode": sellerManagementCode,
-        "productStatusTypes": productStatusTypes or [],
+        "productStatusTypes": productStatusTypes or ["SALE"],
         "page": page,
         "size": size,
         "orderType": orderType,
